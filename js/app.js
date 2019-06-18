@@ -1,13 +1,7 @@
 'use strict';
 
 // upon click generate 3 new random images
-// displayed images - no duplicates of the 3 shown or the 3 previously shown
-
-
-// object properties: imageName, filepath, numberTimesShown, numberTimesClicked, htmlID
-
-// counter for 25 clicks
-// 25 < turn off listeners on images, display list of products and results, 
+// displayed images - no  3 previously shown
 
 // Begin Code
 
