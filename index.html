@@ -14,12 +14,7 @@
 
   <header>
     <nav>
-      <ul>
-        <span>
-          <img src="http://placehold.it/100x50" alt="">
-        </span>
-        <h1>Number of times clicked and shown</h1>
-      </ul>
+      <h1>Number of times clicked and shown</h1>
 
     </nav>
   </header>
@@ -27,7 +22,7 @@
   <main>
 
     <section>
-      <span >
+      <span>
         <ul id="display_vote_results">
         </ul>
       </span>
@@ -47,12 +42,18 @@
       </span>
     </section>
 
+    <section id="chart">
+      <canvas id="image_percentage_results" width=600 height=600></canvas>
+
+    </section>
+
   </main>
 
   <footer>
     <h1></h1>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
   <script src="./js/app.js"></script>
 </body>
 

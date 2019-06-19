@@ -25,7 +25,7 @@ var TriptychImage = function (name, imageSrc) {
   TriptychImage.allImages.push(this);
 };
 
-TriptychImage.prototype.percentageShown = function() {
+TriptychImage.prototype.percentageShown = function () {
   if (this.timesShown !== 0) {
     return Math.floor((this.timesClicked / this.timesShown) * 100);
   }
@@ -117,6 +117,7 @@ imageTriptychSectionTag.addEventListener('click', function handler(event) {
   if (totalClicks === maximumTotalClicks) {
     event.currentTarget.removeEventListener('click', handler);
     displayVoteResults();
+    generateChartData();
   }
 });
 
@@ -128,7 +129,6 @@ var displayVoteResults = function () {
     var resultsDisplayList = document.getElementById('display_vote_results');
     // Build child element
     var imagePercentageResults = document.createElement('li');
-    // 
     // Fill child with content
     imagePercentageResults.textContent = TriptychImage.allImages[i].name + ' was clicked ' + TriptychImage.allImages[i].timesClicked + ' times for a percentage of ' + TriptychImage.allImages[i].percentageShown() + '%';
     // Append child element to parent element
@@ -144,3 +144,59 @@ centerImageDisplayed = TriptychImage.allImages[4];
 rightImageDisplayed = TriptychImage.allImages[0];
 
 pickNewImages();
+
+var generateChartData = function () {
+
+  var percents = [];
+  var names = [];
+
+  for (var i = 0; i < TriptychImage.allImages.length; i++) {
+    names.push(TriptychImage.allImages[i].name);
+    percents.push(TriptychImage.allImages[i].percentageShown());
+  }
+
+  var chartObjectHTML = document.getElementById('image_percentage_results').getContext('2d');
+
+  var imagePercentageChart = new Chart(chartObjectHTML,
+    {
+      type: 'bar',
+      data: {
+        labels: names,
+        datasets: [{
+          label: '# of Votes',
+          data: percents,
+          backgroundColor: [
+            'rgba(255, 99, 132, .4)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 20
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    }
+  );
+};
+
+
+console.log(names, percents);
+
