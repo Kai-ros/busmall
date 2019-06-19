@@ -1,12 +1,5 @@
 'use strict';
 
-// upon click generate 3 new random images
-// displayed images - no  3 previously shown
-
-// Begin Code
-
-// Global Variables
-
 // HTML objects 
 var imageTriptychSectionTag = document.getElementById('image_triptych_section_tag');
 var leftTriptychImageTag = document.getElementById('left_triptych_image_tag');
@@ -14,6 +7,7 @@ var centerTriptychImageTag = document.getElementById('center_triptych_image_tag'
 var rightTriptychImageTag = document.getElementById('right_triptych_image_tag');
 
 var totalClicks = 0;
+var maximumTotalClicks = 25;
 
 // Variables to store the initial images shown
 var leftImageDisplayed = null;
@@ -31,6 +25,13 @@ var TriptychImage = function (name, imageSrc) {
   TriptychImage.allImages.push(this);
 };
 
+TriptychImage.prototype.percentageShown = function() {
+  if (this.timesShown !== 0) {
+    return Math.floor((this.timesClicked / this.timesShown) * 100);
+  }
+  return 0;
+};
+
 // Instantiate array and fill it with goodies.
 TriptychImage.allImages = [];
 
@@ -42,7 +43,7 @@ new TriptychImage('breakfast', '../img/breakfast.jpg');
 new TriptychImage('bubblegum', '../img/bubblegum.jpg');
 new TriptychImage('chair', '../img/chair.jpg');
 new TriptychImage('cthulhu', '../img/cthulhu.jpg');
-new TriptychImage('dog', '../img/dog.jpg');
+new TriptychImage('dog-duck', '../img/dog-duck.jpg');
 new TriptychImage('dragon', '../img/dragon.jpg');
 new TriptychImage('pen', '../img/pen.jpg');
 new TriptychImage('pet-sweep', '../img/pet-sweep.jpg');
@@ -80,63 +81,66 @@ var pickNewImages = function () {
   var centerIndex = remainingIndices.splice(chooseRandomIndex(remainingIndices), 1)[0];
 
 
+
   console.log(TriptychImage.allImages[leftIndex].name, TriptychImage.allImages[centerIndex].name, TriptychImage.allImages[rightIndex].name);
 
   leftImageDisplayed = TriptychImage.allImages[leftIndex];
   centerImageDisplayed = TriptychImage.allImages[centerIndex];
   rightImageDisplayed = TriptychImage.allImages[rightIndex];
 
+  leftImageDisplayed.timesShown++;
+  centerImageDisplayed.timesShown++;
+  rightImageDisplayed.timesShown++;
+
   renderNewImages(leftIndex, centerIndex, rightIndex);
 };
 
 // Click handler section
-var trackImageClicks = function(image) {
-  image.clicks++;
-  image.timesShown++;
+imageTriptychSectionTag.addEventListener('click', function handler(event) {
+  if (totalClicks < maximumTotalClicks) {
+    console.log('click action', totalClicks);
+    switch (event.target) {
+    case leftTriptychImageTag:
+      leftImageDisplayed.timesClicked++;
+      break;
+    case centerTriptychImageTag:
+      centerImageDisplayed.timesClicked++;
+      break;
+    case rightTriptychImageTag:
+      rightImageDisplayed.timesClicked++;
+      break;
+    default:
+    }
+    pickNewImages();
+  }
+  totalClicks++;
+  if (totalClicks === maximumTotalClicks) {
+    event.currentTarget.removeEventListener('click', handler);
+    displayVoteResults();
+  }
+});
+
+var displayVoteResults = function () {
+  for (var i = 0; i < TriptychImage.allImages.length; i++) {
+    console.log(TriptychImage.allImages[i].name, TriptychImage.allImages[i].percentageShown());
+
+    // Target parent element
+    var resultsDisplayList = document.getElementById('display_vote_results');
+    // Build child element
+    var imagePercentageResults = document.createElement('li');
+    // 
+    // Fill child with content
+    imagePercentageResults.textContent = TriptychImage.allImages[i].name + ' was clicked ' + TriptychImage.allImages[i].timesClicked + ' times for a percentage of ' + TriptychImage.allImages[i].percentageShown() + '%';
+    // Append child element to parent element
+    resultsDisplayList.appendChild(imagePercentageResults);
+
+  }
 };
 
-var leftSelectButton = document.getElementById('left_image_button');
-leftSelectButton.addEventListener('click', function handler(event) {
-  if (totalClicks < 10) {
-    trackImageClicks(leftImageDisplayed);
-    totalClicks++;
-  } else {
-    event.target.removeEventListener('click', handler);
-  }
-});
 
-var centerSelectButton = document.getElementById('center_image_button');
-centerSelectButton.addEventListener('click', function handler(event) {
-  if (totalClicks < 10) {
-    trackImageClicks(centerImageDisplayed);
-    totalClicks++;
-  } else {
-    event.target.removeEventListener('click', handler);
-  }
-});
-
-var rightSelectButton = document.getElementById('right_image_button');
-rightSelectButton.addEventListener('click', function handler(event) {
-  if (totalClicks < 10) {
-    trackImageClicks(rightImageDisplayed);
-    totalClicks++;
-  } else {
-    event.target.removeEventListener('click', handler);
-  }
-});
-
-// Turn on click listener functionality.
-imageTriptychSectionTag.addEventListener('click', trackImageClicks);
 
 leftImageDisplayed = TriptychImage.allImages[3];
 centerImageDisplayed = TriptychImage.allImages[4];
 rightImageDisplayed = TriptychImage.allImages[0];
 
 pickNewImages();
-
-/*
-Prevent last picked goats from being picked
-    - STRETCH pick all goats evenly as possible
-  Math.floor  Math.random() * array.length()
-  make sure left and right image are unique
-  */
