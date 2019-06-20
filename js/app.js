@@ -114,6 +114,12 @@ imageTriptychSectionTag.addEventListener('click', function handler(event) {
     pickNewImages();
   }
   totalClicks++;
+
+  var jsonObject = JSON.stringify(totalClicks);
+  console.log('# of clicks: ' + jsonObject);
+
+  localStorage.setItem('totalClicks', jsonObject);
+
   if (totalClicks === maximumTotalClicks) {
     event.currentTarget.removeEventListener('click', handler);
     displayVoteResults();
@@ -138,7 +144,6 @@ var displayVoteResults = function () {
 };
 
 
-
 leftImageDisplayed = TriptychImage.allImages[3];
 centerImageDisplayed = TriptychImage.allImages[4];
 rightImageDisplayed = TriptychImage.allImages[0];
@@ -154,6 +159,7 @@ var generateChartData = function () {
     names.push(TriptychImage.allImages[i].name);
     percents.push(TriptychImage.allImages[i].percentageShown());
   }
+  console.log(names, percents);
 
   var chartObjectHTML = document.getElementById('image_percentage_results').getContext('2d');
 
@@ -197,6 +203,10 @@ var generateChartData = function () {
   );
 };
 
+var jsonResult = localStorage.getItem('totalClicks');
+console.log('stored # of clicks: ' + jsonResult);
 
-console.log(names, percents);
+var reformattedJSONResult = JSON.parse(jsonResult);
+console.log('After parse result: ', reformattedJSONResult);
+
 
