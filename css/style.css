@@ -2,9 +2,48 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: steelblue;
+}
+
 nav > h1 {
+  border-radius: 25px;
   font-style: bold;
   text-align: center;
+  font-size: 65px;
+  text-decoration: underline;
+  /* temporary...? lol */
+  border: 5px solid darkblue;
+}
+
+main {
+  width: 960px;
+  margin: auto;
+}
+
+section > span > h1 {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  font-style: bold;
+  text-align: center;
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+section > span > ul {
+  border: 5px solid darkblue;
+  padding: 15px;
+  border-radius: 25px;
+  background-color: darkslategray;
+  color: peru;
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
+section > span > ul > li {
+  background-color: darkslategray;
+  color: peru;
+  font-size: 20px;
 }
 
 img {
@@ -13,16 +52,23 @@ img {
   width: 200px;
 }
 
+#image_triptych_section_tag {
+  background-color: darkkhaki;
+  /* border: 5px solid darkblue; */
+  /* This is weird, revisit. */
+  margin-bottom: 400px;
+}
+
+#chart {
+  border: 5px solid darkblue;
+  border-radius: 25px;
+  margin-bottom: 50px;
+  background-color: silver;
+}
+
 span:last-child img{
   margin-right: 0;
 }
 
-main {
-  width: 960px;
-  margin: auto;
-}
 
-/* section#results {
-  width: 660px;
-  margin: auto;
-} */
+

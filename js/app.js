@@ -7,7 +7,7 @@ var centerTriptychImageTag = document.getElementById('center_triptych_image_tag'
 var rightTriptychImageTag = document.getElementById('right_triptych_image_tag');
 
 var totalClicks = 0;
-var maximumTotalClicks = 25;
+var maximumTotalClicks = 10;
 
 // Variables to store the initial images shown
 var leftImageDisplayed = null;
